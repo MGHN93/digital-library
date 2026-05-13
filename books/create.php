@@ -3,12 +3,24 @@ require __DIR__ . "/../includes/auth_check.php";
 require __DIR__ . "/../config/database.php";
 require __DIR__ . "/../includes/header.php";
 
+// the script below is to get input from form below, insert it in a variable.
+
 if ($_SERVER['REQUEST_METHOD']=="POST"){
     $title = $_POST['title'];
     $author = $_POST['author'];
     $category = $_POST['category'];
     $year = $_POST['year'];
     $stock = $_POST['stock'];
+
+// this script below, is to take the variable made above, and enter it into table books. the data should appear in books/index.php
+// need to create script for making sure no empty inputs is taken, ' is allowed, etc
+
+    $stmt = $db->prepare("INSERT INTO books(title, author, category, year, stock) VALUES(?,?,?,?,?)");
+    $stmt->execute(
+        [$title, $author, $category, $year, $stock]
+    );
+    header("Location:./index.php");
+    exit();
 }
 
 ?>

@@ -37,8 +37,8 @@ $books = $db->query("SELECT * FROM books")->fetch_all(MYSQLI_ASSOC);
                 <td><?= $b['category']; ?></td>
                 <td><?= $b['stock'];  ?></td>
                 <td>
-                    <a href="./edit.php" class="btn btn-warning">EDIT</a>
-                    <!-- <a href="./delete.php" class="btn btn-danger" onclick="return confirm('are you sure you want to delete?')">DELETE</a> -->
+                    <a href="edit.php?id=<?= $b['id']?>" class="btn btn-warning">EDIT</a>
+                    <a href="delete.php?id=<?= $b['id']?>" class="btn btn-danger" onclick="return confirm('are you sure you want to delete?')">DELETE</a> 
                 </td>
             </tr>
         <?php endforeach; ?>
