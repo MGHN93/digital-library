@@ -3,6 +3,8 @@ require __DIR__ . "/../includes/auth_check.php";
 require __DIR__ . "/../config/database.php";
 require __DIR__ . "/../includes/header.php";
 
+$search=$_GET['search'] ?? '';
+
 // Take all the books in database "perpustakaan"
 
 $books = $db->query("SELECT * FROM books")->fetch_all(MYSQLI_ASSOC);
@@ -23,6 +25,42 @@ $total_pages = ceil($total_books / $limit);
 // get data with limit
 $books = $db->query("SELECT * FROM books LIMIT $start, $limit")->fetch_all(MYSQLI_ASSOC);
 
+if ($search){
+    $keyword = "%$search%";
+
+    // count total searched books
+
+    $count_stmt= $db->prepare("SELECT COUNT(*) as total FROM books WHERE title LIKE ? OR author LIKE ?");
+    $count_stmt->bind_param("ss",$keyword, $keyword);
+    $count_stmt->execute();
+
+    $total_result=$count_stmt->get_result();
+    $total_row=$total_result->fetch_assoc();
+    $total_books=$total_row['total'];
+
+
+    // get searched books with pagination
+
+    $stmt=$db->prepare("SELECT * FROM books WHERE title LIKE ? or author LIKE ? LIMIT ?,?");
+    $stmt->bind_param("ssii",$keyword, $keyword, $start, $limit);
+    $stmt->execute();
+
+    $books = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+} else{
+    // count all books
+    $total_result = $db->query("SELECT COUNT(*) as total FROM books");
+    $total_row = $total_result->fetch_assoc();
+    $total_books = $total_row['total'];
+
+    // get all books with pagination
+    $books = $db->query("
+        SELECT * FROM books
+        LIMIT $start, $limit
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+$total_pages = ceil($total_books / $limit);
+
 
 
 ?>
@@ -32,6 +70,11 @@ $books = $db->query("SELECT * FROM books LIMIT $start, $limit")->fetch_all(MYSQL
 
 <h3>Daftar Buku</h3>
 <a href="./create.php" class="btn btn-primary">Tambah Produk</a>
+
+<form method="get" class="d-flex mb-3 gap-2" role="search">
+        <input class="form-control" type="text" name="search" placeholder="search for books..." value="<?=htmlspecialchars($search)?>"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
 
 <table class="table">
     <thead>

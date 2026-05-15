@@ -37,13 +37,19 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
         }
     }
 
-        // Cek field kosong
-    if (empty(trim($_POST['title']))) {
-        $errors[] = "title cannot be empty";
+     // Cek field kosong
+    if (trim($_POST['title'])==='') {
+        $errors['title'] = "title cannot be empty";
+    }
+    if (trim($_POST['author'])==='') {
+        $errors['author'] = "author cannot be empty";
+    }
+    if (trim($_POST['stock'])==='') {
+        $errors['stock'] = "stock cannot be empty";
     }
     // Cek tipe data
     if (!is_numeric($_POST['year']) || $_POST['year'] < 0) {
-        $errors[] = "year has to be a positive number";
+        $errors['year'] = "year has to be a positive number";
     }
     if (!is_numeric($_POST['stock']) || $_POST['stock'] < 0) {
         $errors[] = "Stock has to be a positive number";
@@ -65,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     header("Location:./index.php?success=$message");
     exit();
     }
-    foreach($errors as $error){
-        echo '<div class="alert alert-danger">' . htmlspecialchars($error) .
-            '</div>';
-    }
+    // foreach($errors as $error){
+    //     echo '<div class="alert alert-danger">' . htmlspecialchars($error) .
+    //         '</div>';
+    // }
 
 }
 ?>
@@ -84,10 +90,16 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     <div class="mb-3">
         <label class="form-label">Judul Buku*</label>
         <input type="text" class="form-control" name="title">
+        <?php if (isset($errors['title'])): ?>    
+        <div class="alert alert-danger"><?= $errors['title'] ?></div>
+    <?php endif; ?>
     </div>
     <div class="mb-3">
         <label class="form-label">Pengarang*</label>
         <input type="text" class="form-control" name="author">
+        <?php if (isset($errors['author'])): ?>    
+        <div class="alert alert-danger"><?= $errors['author'] ?></div>
+    <?php endif; ?>
     </div>
     <div class="mb-3">
         <label class="form-label">Category</label>
@@ -101,11 +113,17 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     <div class="mb-3">
         <label class="form-label">Tahun Terbit</label>
         <input type="number" class="form-control" name="year">
+        <?php if (isset($errors['year'])): ?>    
+        <div class="alert alert-danger"><?= $errors['year'] ?></div>
+    <?php endif; ?>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Stok*</label>
         <input type="number" class="form-control" name="stock">
+        <?php if (isset($errors['stock'])): ?>    
+        <div class="alert alert-danger"><?= $errors['stock'] ?></div>
+    <?php endif; ?>
     </div>
 
     <div class="mb-3">
@@ -114,6 +132,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
-
+    <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
 
 </form>

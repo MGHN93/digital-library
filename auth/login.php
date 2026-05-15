@@ -34,7 +34,7 @@ $error = "user tidak ada";
 <?php if ($error): ?>
     <div class="alert alert-danger"><?= $error ?></div>
     
-<?php endif ?>
+<?php endif; ?>
 
 <form method="post">
     <div class="mb-3">
