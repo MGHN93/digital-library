@@ -1,7 +1,7 @@
 <?php
 session_start();
 require __DIR__ . "/../config/database.php";
-require __DIR__ . "/../includes/header.php";
+// require __DIR__ . "/../includes/header.php";
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -29,7 +29,10 @@ $error = "user tidak ada";
 }
 
 ?>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 <h1>LOGIN</h1>
+
 
 <?php if ($error): ?>
     <div class="alert alert-danger"><?= $error ?></div>
