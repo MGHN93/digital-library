@@ -5,7 +5,7 @@ require __DIR__ . "/../config/database.php";
 
 // script below is to get id and title of books in table books that has stock greater than 0
 
-$result = $db->query("SELECT id, title FROM books WHERE stock >0");
+$result = $db->query("SELECT id, title, stock FROM books WHERE stock >0");
 $data = $result->fetch_all(MYSQLI_ASSOC);
 
 // Script below is to get user input from form below and insert into variable
@@ -40,13 +40,13 @@ exit();
         <select class="form-select" name="title" id="book-select">
             <option value=""></option>
             <?php foreach ($data as $d): ?>
-                <option value="<?=($d['id']) ?>">
+                <option value="<?=($d['id']) ?>"
+                data-stock="<?= $d['stock'] ?>">
                     <?= htmlspecialchars($d['title']) ?>
                 </option>
             <?php endforeach ?>
-
-
         </select>
+        <div id="stock-alert" class="alert alert-success mt-2 d-none"></div>
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Nama Peminjam</label>
@@ -59,3 +59,37 @@ exit();
     <button type="submit" class="btn btn-primary">Catat Pinjam</button>
     <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
 </form>
+
+<script>
+
+const select =
+    document.getElementById('book-select');
+
+const alertBox =
+    document.getElementById('stock-alert');
+
+select.addEventListener('change', function () {
+
+    const selectedOption =
+        this.options[this.selectedIndex];
+
+    const stock =
+        selectedOption.dataset.stock;
+
+    if (stock !== undefined) {
+
+        alertBox.classList.remove('d-none');
+
+        alertBox.innerHTML =
+            "Stok tersedia: " + stock;
+
+    } else {
+
+        alertBox.classList.add('d-none');
+
+    }
+
+});
+
+
+</script>
