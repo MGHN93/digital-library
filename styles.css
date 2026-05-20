@@ -1,0 +1,176 @@
+:root {
+    --first_color: #0090FF;
+    --second_color: #0038C7;
+    --third_color: #5CE1FF;
+    --fourth_color: #A855F7;
+    --fifth_color: #6D28D9;
+    --sixth_color: #F3F6FF;
+}
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'inter', sans-serif;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 5px;
+    font-weight: 600;
+    color: #6D28D9;
+}
+
+.logo {
+    align-items: center;
+    width: 100%;
+    max-width: 220px;
+}
+
+.login-card {
+
+    border: 1px solid black;
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 16px;
+
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg,
+            #0090FF,
+            #A855F7);
+
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+
+}
+
+.custom-navbar {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: clamp(1rem, 1.0vw, 2rem);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #0F172A;
+    color: var(--sixth_color)
+
+}
+
+.navbar-right {
+
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.navbar-right a {
+    font-family: "inter", sans-serif;
+    margin-right: 20px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar-right a:hover {
+    cursor: pointer;
+    color: #6D28D9;
+    transition: all 0.2s ease-in-out;
+
+}
+
+.navbar-right button {
+    background: linear-gradient(135deg,
+            #0090FF,
+            #A855F7);
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+.navbar-right button:hover {
+    cursor: pointer;
+    background-color: #F3F6FF;
+    color: #0361a8;
+    transition: all 0.2s ease-in-out;
+}
+
+.navbar-left{
+    padding-left: 20px;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-logo p {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+}
+
+.navbar-logo img {
+    width: 100%;
+    max-width: 50px;
+
+}
+
+.book-page{
+    font-family: "inter", sans-serif;
+    background-color: #F8FAFC;
+    min-height: 100vh;
+    padding: 30px;
+}
+.table{
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.05);
+}
+
+.book-header{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.book-header a{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    text-decoration: none;
+}
+
+.book-header button{
+    border: none;
+    border-radius: 5px;
+    background-color: #0F172A;
+    color: #F3F6FF;
+}
+
+.book-header button:hover{
+    cursor: pointer;
+    background-color: white;
+    color: #0F172A;
+    transition: all 0.2s ease-in-out;
+}
