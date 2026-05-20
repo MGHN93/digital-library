@@ -7,6 +7,10 @@
     --sixth_color: #F3F6FF;
 }
 
+body{
+    background-color: #F8FAFC;
+}
+
 .login-page {
     display: flex;
     flex-direction: column;
@@ -174,3 +178,41 @@
     color: #0F172A;
     transition: all 0.2s ease-in-out;
 }
+
+.create-page{
+    font-family: "inter", sans-serif;
+    background-color: #F8FAFC;
+    min-height: 100vh;
+    padding: 30px;
+
+}
+
+.create-separate{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px; 
+}
+
+.create-header{
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.table-tab{
+    display: flex;
+    gap: none;
+    margin-bottom: -5px;
+    margin-left: 10px;
+}
+
+.table-tab a{
+    text-decoration: none;
+    background-color: white;
+    border: 1px solid white;
+    padding: 10px 18px;
+    border-radius: 5px;
+    
+
+}
+
