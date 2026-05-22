@@ -100,7 +100,7 @@ require __DIR__ . "/../includes/footer.php"
                                 alt="<?= htmlspecialchars($b['title']) ?>" style="width:60px; height:60px; objec-fit:cover;">
 
                         <?php else: ?>
-                            <span>#</span>
+                            <span>-</span>
                         <?php endif; ?>
                     </td>
                     <td><?= $b['title'] . '/' . $b['author']; ?></td>
@@ -113,8 +113,12 @@ require __DIR__ . "/../includes/footer.php"
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="edit.php?id=<?= $b['id'] ?>" class="btn btn-warning">EDIT</a>
-                        <a href="delete.php?id=<?= $b['id'] ?>" class="btn btn-danger" onclick="return confirm('are you sure you want to delete?')">DELETE</a>
+                        <a href="edit.php?id=<?= $b['id'] ?>" class="btn btn-edit btn-warning">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a href="delete.php?id=<?= $b['id'] ?>" class="btn btn-delete btn-danger" onclick="return confirm('are you sure you want to delete?')">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
                     </td>
                 </tr>
             <?php

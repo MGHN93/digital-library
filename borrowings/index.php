@@ -97,7 +97,9 @@ $nomor = 0;
             <form action="return.php" method="POST">
               <input type="hidden" name="borrow_id" value="<?= $al['id'] ?>">
               <?php if ($al['status'] == 'dipinjam'): ?>
-                <button type="submit" class="btn btn-success">Kembalikan</button>
+                <button type="submit" class="btn btn-return btn-success">
+                  <i class="bi bi-box-arrow-in-left"></i>
+                </button>
 
               <?php endif; ?>
             </form>
