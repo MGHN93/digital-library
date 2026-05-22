@@ -20,17 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $year = $_POST['year'];
     $stock = $_POST['stock'];
 
-    
+
     $cover_path = $book['cover'];
 
     // Cek field kosong
-    if (trim($_POST['title'])==='') {
+    if (trim($_POST['title']) === '') {
         $errors['title'] = "title cannot be empty";
     }
-    if (trim($_POST['author'])==='') {
+    if (trim($_POST['author']) === '') {
         $errors['author'] = "author cannot be empty";
     }
-    if (trim($_POST['stock'])==='') {
+    if (trim($_POST['stock']) === '') {
         $errors['stock'] = "stock cannot be empty";
     }
     // Cek tipe data
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
 
-    if (isset($_FILES['cover'])) {
+    if (isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE) {
         $allowed_type = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
         $max_size = 2 * 1024 * 1024; // Maximum 2MB
         $file_type = $_FILES['cover']['type'];
@@ -57,13 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $filename = 'books_' . uniqid() . '.' . strtolower($ext); // this creates a unique file name book_321654321.png (example)
             $dest = '../uploads/covers/' . $filename; // this store the file location to a variable
             if (move_uploaded_file($_FILES['cover']['tmp_name'], $dest)) {
+                // delete old image
+                if (!empty($book['cover']) && file_exists("../uploads/covers/" . $book['cover'])) {
+                    unlink("../uploads/covers/" . $book['cover']);
+                }
                 $cover_path = $filename;
             } else {
                 $errors[] = "failed to save file. Check permission folder uploads/covers/.";
             }
         }
-        // only update if no errors
-        if (empty($errors)){
+    }
+    // only update if no errors
+    if (empty($errors)) {
         $stmt = $db->prepare("UPDATE books SET title=?, author=?, category=?, year=?, stock=?, cover=? WHERE id=?");
         $stmt->bind_param(
             "sssissi",
@@ -82,63 +87,68 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $editmsg = 'Buku berhasil di edit';
         header("Location:./index.php?success=$editmsg");
         exit();
-        }
     }
 }
 ?>
-
-<h1>Edit Produk</h1>
-
-<!-- buat form untuk input produk baru-->
-<form action="#" method="post" enctype="multipart/form-data">
-    <!-- isi dengan form bootstrap-->
-    
-    <div class="mb-3">
-        <label class="form-label">Judul Buku*</label>
-        <input type="text" class="form-control" name="title" value=" <?= $book['title'] ?>">
-    <?php if (isset($errors['title'])): ?>    
-        <div class="alert alert-danger"><?= $errors['title'] ?></div>
-    <?php endif; ?>
+<div class="create-page">
+    <div class="create-header">
+        <h4>Edit Produk</h4>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Pengarang*</label>
-        <input type="text" class="form-control" name="author" value=" <?= $book['author'] ?>">
-        <?php if (isset($errors['author'])): ?>    
-        <div class="alert alert-danger"><?= $errors['author'] ?></div>
-    <?php endif; ?>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Category</label>
-        <select class="form-control" name="category" value=" <?= $book['category'] ?>">
-            <option value="Novel">Novel</option>
-            <option value="Horror">Horror</option>
-            <option value="Biography">Biography</option>
-            <option value="Others">Others</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Tahun Terbit</label>
-        <input type="number" class="form-control" name="year" value=<?= $book['year'] ?>>
-        <?php if (isset($errors['year'])): ?>    
-        <div class="alert alert-danger"><?= $errors['year'] ?></div>
-    <?php endif; ?>
-    </div>
+    <!-- buat form untuk input produk baru-->
+    <div class="create-table">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <!-- isi dengan form bootstrap-->
 
-    <div class="mb-3">
-        <label class="form-label">Stok*</label>
-        <input type="number" class="form-control" name="stock" value="<?= $book['stock'] ?>">
-        <?php if (isset($errors['stock'])): ?>    
-        <div class="alert alert-danger"><?= $errors['stock'] ?></div>
-    <?php endif; ?>
+            <div class="mb-3">
+                <label class="form-label">Judul Buku*</label>
+                <input type="text" class="form-control" name="title" value=" <?= $book['title'] ?>">
+                <?php if (isset($errors['title'])): ?>
+                    <div class="alert alert-danger"><?= $errors['title'] ?></div>
+                <?php endif; ?>
+            </div>
+            <div class="create-separate">
+                <div class="mb-3">
+                    <label class="form-label">Pengarang*</label>
+                    <input type="text" class="form-control" name="author" value=" <?= $book['author'] ?>">
+                    <?php if (isset($errors['author'])): ?>
+                        <div class="alert alert-danger"><?= $errors['author'] ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" name="category" value=" <?= $book['category'] ?>">
+                        <option value="Novel">Novel</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tahun Terbit</label>
+                    <input type="number" class="form-control" name="year" value=<?= $book['year'] ?>>
+                    <?php if (isset($errors['year'])): ?>
+                        <div class="alert alert-danger"><?= $errors['year'] ?></div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Stok*</label>
+                    <input type="number" class="form-control" name="stock" value="<?= $book['stock'] ?>">
+                    <?php if (isset($errors['stock'])): ?>
+                        <div class="alert alert-danger"><?= $errors['stock'] ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cover (opsional)</label>
+                <input type="file" class="form-control" name="cover" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
+
+
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label class="form-label">Cover (opsional)</label>
-        <input type="file" class="form-control" name="cover" accept="image/*">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
-
-
-</form>
+</div>

@@ -3,7 +3,7 @@ require __DIR__ . "/../includes/auth_check.php";
 require __DIR__ . "/../config/database.php";
 require __DIR__ . "/../includes/header.php";
 
-$search=$_GET['search'] ?? '';
+$search = $_GET['search'] ?? '';
 
 // Take all the books in database "perpustakaan"
 
@@ -25,28 +25,28 @@ $total_pages = ceil($total_books / $limit);
 // get data with limit
 $books = $db->query("SELECT * FROM books LIMIT $start, $limit")->fetch_all(MYSQLI_ASSOC);
 
-if ($search){
+if ($search) {
     $keyword = "%$search%";
 
     // count total searched books
 
-    $count_stmt= $db->prepare("SELECT COUNT(*) as total FROM books WHERE title LIKE ? OR author LIKE ?");
-    $count_stmt->bind_param("ss",$keyword, $keyword);
+    $count_stmt = $db->prepare("SELECT COUNT(*) as total FROM books WHERE title LIKE ? OR author LIKE ?");
+    $count_stmt->bind_param("ss", $keyword, $keyword);
     $count_stmt->execute();
 
-    $total_result=$count_stmt->get_result();
-    $total_row=$total_result->fetch_assoc();
-    $total_books=$total_row['total'];
+    $total_result = $count_stmt->get_result();
+    $total_row = $total_result->fetch_assoc();
+    $total_books = $total_row['total'];
 
 
     // get searched books with pagination
 
-    $stmt=$db->prepare("SELECT * FROM books WHERE title LIKE ? or author LIKE ? LIMIT ?,?");
-    $stmt->bind_param("ssii",$keyword, $keyword, $start, $limit);
+    $stmt = $db->prepare("SELECT * FROM books WHERE title LIKE ? or author LIKE ? LIMIT ?,?");
+    $stmt->bind_param("ssii", $keyword, $keyword, $start, $limit);
     $stmt->execute();
 
     $books = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-} else{
+} else {
     // count all books
     $total_result = $db->query("SELECT COUNT(*) as total FROM books");
     $total_row = $total_result->fetch_assoc();
@@ -61,80 +61,87 @@ if ($search){
 
 $total_pages = ceil($total_books / $limit);
 
-
+require __DIR__ . "/../includes/footer.php"
 
 ?>
 
-
-
-
-<h3>Daftar Buku</h3>
-<a href="./create.php" class="btn btn-primary">Tambah Produk</a>
-
-<form method="get" class="d-flex mb-3 gap-2" role="search">
-        <input class="form-control" type="text" name="search" placeholder="search for books..." value="<?=htmlspecialchars($search)?>"/>
+<div class="book-page">
+    <section class="book-header">
+        <h3>Daftar Buku</h3>
+        <a href="./create.php"><button>+Tambah Produk</button></a>
+    </section>
+    <form method="get" class="d-flex mb-3 gap-2" role="search">
+        <input class="form-control" type="text" name="search" placeholder="search for books..." value="<?= htmlspecialchars($search) ?>" />
         <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+    </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Cover</th>
-            <th scope="col">Judul/Pengarang</th>
-            <th scope="col">Kat.</th>
-            <th scope="col">Stok</th>
-            <th scope="col">Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- loop to enter all products from database to table below -->
-        <?php
-        foreach ($books as $b):
-        ?>
+    <table class="table">
+        <thead>
             <tr>
-                <th>
-                    <?php if ($b['cover']): ?>
-                        <img src="../uploads/covers/<?= htmlspecialchars($b['cover']) ?>"
-                            alt="<?= htmlspecialchars($b['title']) ?>"style="width:60px; height:60px; objec-fit:cover;">
-
-                    <?php else: ?>
-                        <span>#</span>
-                    <?php endif; ?>
-                </th>
-                <td><?= $b['title'] . '/' . $b['author']; ?></td>
-                <td><?= $b['category']; ?></td>
-                <!-- <td><?= $b['stock'];  ?></td> -->
-                <td><?php if ($b['stock'] > 0): ?>
-                        <span class="badge bg-success"><?= $b['stock'] ?></span>
-                    <?php else: ?>
-                        <span class="badge bg-danger"><?= $b['stock'] ?></span>
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <a href="edit.php?id=<?= $b['id'] ?>" class="btn btn-warning">EDIT</a>
-                    <a href="delete.php?id=<?= $b['id'] ?>" class="btn btn-danger" onclick="return confirm('are you sure you want to delete?')">DELETE</a>
-                </td>
+                <th scope="col">No.</th>
+                <th scope="col">Cover</th>
+                <th scope="col">Judul/Pengarang</th>
+                <th scope="col">Kat.</th>
+                <th scope="col">Stok</th>
+                <th scope="col">Aksi</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <!-- loop to enter all products from database to table below -->
+            <?php
+            $nomor = $start + 1;
+            foreach ($books as $b):
+            ?>
+                <tr>
+                    <th scope="row"><?= $nomor; ?></th>
+                    <td>
+                        <?php if ($b['cover']): ?>
+                            <img src="../uploads/covers/<?= htmlspecialchars($b['cover']) ?>"
+                                alt="<?= htmlspecialchars($b['title']) ?>" style="width:60px; height:60px; objec-fit:cover;">
 
-<div class="mt-3">
-    <?php if ($page > 1): ?>
-        <a href="?page=<?= $page - 1 ?>" class="btn btn-secondary">Previous</a>
-    <?php endif; ?>
+                        <?php else: ?>
+                            <span>#</span>
+                        <?php endif; ?>
+                    </td>
+                    <td><?= $b['title'] . '/' . $b['author']; ?></td>
+                    <td><?= $b['category']; ?></td>
+                    <!-- <td><?= $b['stock'];  ?></td> -->
+                    <td><?php if ($b['stock'] > 0): ?>
+                            <span class="badge bg-success"><?= $b['stock'] ?></span>
+                        <?php else: ?>
+                            <span class="badge bg-danger"><?= $b['stock'] ?></span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="edit.php?id=<?= $b['id'] ?>" class="btn btn-warning">EDIT</a>
+                        <a href="delete.php?id=<?= $b['id'] ?>" class="btn btn-danger" onclick="return confirm('are you sure you want to delete?')">DELETE</a>
+                    </td>
+                </tr>
+            <?php
+                $nomor += 1;
+            endforeach;
+            ?>
+        </tbody>
+    </table>
 
-    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <a href="?page=<?= $i ?>" class="btn <?= $i == $page ? 'btn-primary' : 'btn-light' ?>">
-            <?= $i ?>
-        </a>
-    <?php endfor; ?>
+    <div class="mt-3">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>" class="btn btn-secondary">Previous</a>
+        <?php endif; ?>
 
-    <?php if ($page < $total_pages): ?>
-        <a href="?page=<?= $page + 1 ?>" class="btn btn-secondary">Next</a>
-    <?php endif; ?>
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?= $i ?>" class="btn <?= $i == $page ? 'btn-primary' : 'btn-light' ?>">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $total_pages): ?>
+            <a href="?page=<?= $page + 1 ?>" class="btn btn-secondary">Next</a>
+        <?php endif; ?>
+    </div>
+
+    <?php
+    require __DIR__ . "/../includes/footer.php";
+    ?>
+
 </div>
-
-<?php
-require __DIR__ . "/../includes/footer.php";
-?>

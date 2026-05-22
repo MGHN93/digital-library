@@ -9,87 +9,84 @@ $result = $db->query("SELECT id, title, stock FROM books WHERE stock >0");
 $data = $result->fetch_all(MYSQLI_ASSOC);
 
 // Script below is to get user input from form below and insert into variable
-if ($_SERVER['REQUEST_METHOD']=="POST"){
-    $titles=$_POST['title'];
-    $names=$_POST['name'];    
-    $dates=$_POST['date'];
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $titles = $_POST['title'];
+    $names = $_POST['name'];
+    $dates = $_POST['date'];
 
-// script below is to insert variable froms script abvoe into table borrowings
-$stmt= $db->prepare("INSERT INTO borrowings (book_id, borrower_name, borrow_date, status) VALUES (?,?,?,'dipinjam')");
-$stmt->bind_param("iss",$titles,$names,$dates);
-$stmt->execute();
+    // script below is to insert variable froms script abvoe into table borrowings
+    $stmt = $db->prepare("INSERT INTO borrowings (book_id, borrower_name, borrow_date, status) VALUES (?,?,?,'dipinjam')");
+    $stmt->bind_param("iss", $titles, $names, $dates);
+    $stmt->execute();
 
-// reduce stock for every borrowed book in table books
-$stock_stmt=$db->prepare("UPDATE books SET stock = stock -1 WHERE id = ? AND stock > 0");
-$stock_stmt->bind_param("i", $titles);
-$stock_stmt->execute();
+    // reduce stock for every borrowed book in table books
+    $stock_stmt = $db->prepare("UPDATE books SET stock = stock -1 WHERE id = ? AND stock > 0");
+    $stock_stmt->bind_param("i", $titles);
+    $stock_stmt->execute();
 
-header("Location: index.php");
-exit();
-
+    header("Location: index.php");
+    exit();
 }
 
 ?>
 
-
-<h1>Catat Peminjaman</h1>
-
-<form method="POST">
-    <div class="mb-3">
-        <label for="title" class="from-label">Judul</label>
-        <select class="form-select" name="title" id="book-select">
-            <option value=""></option>
-            <?php foreach ($data as $d): ?>
-                <option value="<?=($d['id']) ?>"
-                data-stock="<?= $d['stock'] ?>">
-                    <?= htmlspecialchars($d['title']) ?>
-                </option>
-            <?php endforeach ?>
-        </select>
-        <div id="stock-alert" class="alert alert-success mt-2 d-none"></div>
+<div class="create-page">
+    <div class="create-header">
+        <h4>Catat Peminjaman</h4>
     </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Nama Peminjam</label>
-        <input type="text" title="name" name="name" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Tanggal Pinjam</label>
-        <input type="date" title="date" name="date" class="form-control" id="exampleInputPassword1">
-    </div>
-    <button type="submit" class="btn btn-primary">Catat Pinjam</button>
-    <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
-</form>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="from-label">Judul</label>
+            <select class="form-select" name="title" id="book-select">
+                <option value=""></option>
+                <?php foreach ($data as $d): ?>
+                    <option value="<?= ($d['id']) ?>"
+                        data-stock="<?= $d['stock'] ?>"
+                        data-test="testing">
+                        <?= htmlspecialchars($d['title']) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+            <div id="stock-alert" class="alert alert-success mt-2 d-none"></div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Nama Peminjam</label>
+            <input type="text" title="name" name="name" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Tanggal Pinjam</label>
+            <input type="date" title="date" name="date" class="form-control" id="exampleInputPassword1">
+        </div>
+        <button type="submit" class="btn btn-primary">Catat Pinjam</button>
+        <button type="button" class="btn btn-danger" onclick="history.back()">Cancel</button>
+    </form>
+</div>
 
 <script>
+    const select =
+        document.getElementById('book-select');
 
-const select =
-    document.getElementById('book-select');
+    const alertBox =
+        document.getElementById('stock-alert');
 
-const alertBox =
-    document.getElementById('stock-alert');
+    select.addEventListener('change', function() {
 
-select.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
 
-    const selectedOption =
-        this.options[this.selectedIndex];
+        const stock = selectedOption.dataset.stock;
 
-    const stock =
-        selectedOption.dataset.stock;
+        if (stock !== undefined) {
 
-    if (stock !== undefined) {
+            alertBox.classList.remove('d-none');
 
-        alertBox.classList.remove('d-none');
+            alertBox.innerHTML =
+                "Stok tersedia: " + stock;
 
-        alertBox.innerHTML =
-            "Stok tersedia: " + stock;
+        } else {
 
-    } else {
+            alertBox.classList.add('d-none');
 
-        alertBox.classList.add('d-none');
+        }
 
-    }
-
-});
-
-
+    });
 </script>
