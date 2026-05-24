@@ -3,6 +3,7 @@ require __DIR__ . "/../includes/auth_check.php";
 require __DIR__ . "/../config/database.php";
 require __DIR__ . "/../includes/header.php";
 
+$delete_msg = '';
 $id_book = $_GET['id'];
 
 // get book cover first
@@ -22,15 +23,15 @@ if ($book) {
         if (file_exists($file)) {
             unlink($file);
         }
-
-        $del_stmt = $db->prepare("DELETE FROM books WHERE id=?");
-        $del_stmt->bind_param("i", $id_book);
-        $del_stmt->execute();
     }
+
+    $del_stmt = $db->prepare("DELETE FROM books WHERE id=?");
+    $del_stmt->bind_param("i", $id_book);
+    $del_stmt->execute();
 }
 
 
 
 
 $delete_msg = 'book has been deleted';
-header("Location:./index.php?success=$delete_msg");
+header("Location:./index.php?delete_msg=$delete_msg");

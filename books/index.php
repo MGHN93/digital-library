@@ -61,14 +61,31 @@ if ($search) {
 
 $total_pages = ceil($total_books / $limit);
 
-require __DIR__ . "/../includes/footer.php"
+// require __DIR__ . "/../includes/footer.php"
 
 ?>
 
 <div class="book-page">
+
+    <?php if (isset($_GET['add_msg'])): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($_GET['add_msg']) ?></div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['delete_msg'])): ?>
+        <div class="alert alert-danger">
+            <?= htmlspecialchars($_GET['delete_msg']) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['editmsg'])): ?>
+        <div class="alert alert-success">
+            <?= htmlspecialchars($_GET['editmsg']) ?>
+        </div>
+    <?php endif; ?>
+
     <section class="book-header">
         <h3>Daftar Buku</h3>
-        <a href="./create.php"><button>+Tambah Produk</button></a>
+        <a href="./create.php"><button>Tambah Buku</button></a>
     </section>
     <form method="get" class="d-flex mb-3 gap-2" role="search">
         <input class="form-control" type="text" name="search" placeholder="search for books..." value="<?= htmlspecialchars($search) ?>" />
@@ -144,8 +161,8 @@ require __DIR__ . "/../includes/footer.php"
         <?php endif; ?>
     </div>
 
-    <?php
-    require __DIR__ . "/../includes/footer.php";
-    ?>
 
 </div>
+<?php
+require __DIR__ . "/../includes/footer.php";
+?>

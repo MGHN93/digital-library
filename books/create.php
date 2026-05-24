@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $year = $_POST['year'];
     $stock = $_POST['stock'];
 
+    $add_msg='';
     $errors = [];
     $cover_path = "";
 
@@ -67,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             [$title, $author, $category, $year, $stock, $cover_path]
         );
 
-        $message = 'book successfully added';
-        header("Location:./index.php?success=$message");
+        $add_msg = 'book successfully added';
+        header("Location:./index.php?add_msg=$add_msg");
         exit();
     }
     // foreach($errors as $error){
@@ -81,9 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 <div class="create-page">
-
     <div class="create-header">
-        <h4>Tambah Produk Baru</h4>
+        <h4>Tambah Buku Baru</h4>
     </div>
     <!-- buat form untuk input produk baru-->
     <div class="create-table">

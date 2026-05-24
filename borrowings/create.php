@@ -62,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     </form>
 </div>
 
+
+
 <script>
     const select =
         document.getElementById('book-select');
@@ -90,3 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     });
 </script>
+
+<?php
+require __DIR__ . "/../includes/footer.php"
+?>

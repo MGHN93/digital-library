@@ -12,6 +12,21 @@ body{
     margin: 0;
 }
 
+.main-footer{
+    background-color: #0F172A;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 16px;
+    font-family: "Inter", sans-serif;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.main-footer p{
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+}
+
 .login-page {
     min-height: 100vh;
     display: flex;
@@ -65,6 +80,15 @@ body{
     z-index: 1;
     margin-bottom: 20px;
 }
+
+.login-footer{
+    padding: 20px;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    text-align: center;
+}
+
+
 
 .title {
     font-family: 'Space Grotesk', sans-serif;
@@ -220,6 +244,7 @@ body{
     justify-content: end;
     align-items: center;
     text-decoration: none;
+    
 }
 
 .book-header button{
@@ -227,6 +252,8 @@ body{
     border-radius: 5px;
     background-color: #0F172A;
     color: #F3F6FF;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .book-header button:hover{
@@ -247,6 +274,7 @@ body{
 .create-separate{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin-top: 16px;
     gap: 20px; 
 }
 
@@ -259,7 +287,7 @@ body{
 .table-tab{
     display: flex;
     gap: 5px;
-    margin-bottom: none;
+    margin-bottom: 5px;
     margin-left: 10px;
     
 }

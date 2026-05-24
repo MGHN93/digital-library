@@ -11,6 +11,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $book = $result->fetch_assoc();
 
+$editmsg = '';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
         $editmsg = 'Buku berhasil di edit';
-        header("Location:./index.php?success=$editmsg");
+        header("Location:./index.php?editmsg=$editmsg");
         exit();
     }
 }
@@ -152,3 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </form>
     </div>
 </div>
+<?php
+require __DIR__ . "/../includes/footer.php"
+?>

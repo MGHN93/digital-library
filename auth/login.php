@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         exit();
     }
 
-    $error = "user tidak ada";
+    $error = "username/password salah";
 }
 
 ?>
@@ -63,5 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <?php endif; ?>
     </div>
+
+    <footer class="login-footer">
+        <div>
+            <p> Creator: M. Gilang Hendrian N. | May 2026</p>
+        </div>
+    </footer>
 
 </body>

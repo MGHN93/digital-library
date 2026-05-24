@@ -47,9 +47,10 @@ if ($status == 'dipinjam') {
 $nomor = 0;
 ?>
 <div class="book-page">
+
   <section class="book-header">
     <h3>Peminjaman</h3>
-    <a href="./create.php"><button>+ Catat Pinjam</button></a>
+    <a href="./create.php"><button>Catat Pinjam</button></a>
   </section>
 
   <table class="table">
@@ -98,7 +99,7 @@ $nomor = 0;
               <input type="hidden" name="borrow_id" value="<?= $al['id'] ?>">
               <?php if ($al['status'] == 'dipinjam'): ?>
                 <button type="submit" class="btn btn-return btn-success">
-                  <i class="bi bi-box-arrow-in-left"></i>
+                  <span class="bi bi-box-arrow-in-left">Kembalikan</span>
                 </button>
 
               <?php endif; ?>
