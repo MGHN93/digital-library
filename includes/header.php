@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +29,7 @@
       <div>
         <a href="/books/index.php">Buku</a>
         <a href="/borrowings/index.php">Peminjaman</a>
-        <a href="#">Admin</a>
+        <a href="#"><?= $_SESSION['username'] ?></a>
         <?php if (isset($_SESSION['user_id'])): ?>
           <a href="/auth/logout.php" >
             <button>LOGOUT</button>

@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
         $_SESSION['login_at'] = date("d/m/Y H:i:s");
 
         header("Location:/books/index.php");
@@ -49,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <form method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="'admin'">
+                <input type="text" class="form-control" id="username" name="username" placeholder="'demo'">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="'admin123'">
+                <input type="password" class="form-control" id="password" name="password" placeholder="'demo123'">
             </div>
 
             <button type="submit" class="login-button">LOGIN</button>

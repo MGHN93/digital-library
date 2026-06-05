@@ -7,7 +7,7 @@ $search = $_GET['search'] ?? '';
 
 // Take all the books in database "perpustakaan"
 
-$books = $db->query("SELECT * FROM books")->fetch_all(MYSQLI_ASSOC);
+// $books = $db->query("SELECT * FROM books")->fetch_all(MYSQLI_ASSOC);
 // var_dump($books);
 
 // pagination settings
@@ -15,15 +15,15 @@ $limit = 8; // number of products per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $limit;
 
-// get total data
-$total_result = $db->query("SELECT COUNT(*) as total FROM books");
-$total_row = $total_result->fetch_assoc();
-$total_books = $total_row['total'];
+// // get total data
+// $total_result = $db->query("SELECT COUNT(*) as total FROM books");
+// $total_row = $total_result->fetch_assoc();
+// $total_books = $total_row['total'];
 
-$total_pages = ceil($total_books / $limit);
+// $total_pages = ceil($total_books / $limit);
 
-// get data with limit
-$books = $db->query("SELECT * FROM books LIMIT $start, $limit")->fetch_all(MYSQLI_ASSOC);
+// // get data with limit
+// $books = $db->query("SELECT * FROM books LIMIT $start, $limit")->fetch_all(MYSQLI_ASSOC);
 
 if ($search) {
     $keyword = "%$search%";
@@ -120,8 +120,8 @@ $total_pages = ceil($total_books / $limit);
                             <span>-</span>
                         <?php endif; ?>
                     </td>
-                    <td><?= $b['title'] . '/' . $b['author']; ?></td>
-                    <td><?= $b['category']; ?></td>
+                    <td><?= htmlspecialchars($b['title']) . '/' . htmlspecialchars($b['author']); ?></td>
+                    <td><?= htmlspecialchars($b['category']); ?></td>
                     <!-- <td><?= $b['stock'];  ?></td> -->
                     <td><?php if ($b['stock'] > 0): ?>
                             <span class="badge bg-success"><?= $b['stock'] ?></span>

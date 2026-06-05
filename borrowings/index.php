@@ -50,7 +50,7 @@ $nomor = 0;
 
   <section class="book-header">
     <h3>Peminjaman</h3>
-    <a href="./create.php"><button>Catat Pinjam</button></a>
+    <a href="./create.php"><button class="px-3 py-2">Catat Pinjam</button></a>
   </section>
 
   <table class="table">
@@ -90,10 +90,10 @@ $nomor = 0;
       ?>
         <tr>
           <th scope="row"><?= $nomors ?></th>
-          <td scope="row"><?= $al['book_title'] ?></td>
-          <td><?= $al['borrower_name'] ?></td>
-          <td><?= $al['borrow_date'] ?></td>
-          <td><?= $al['status'] ?></td>
+          <td scope="row"><?= htmlspecialchars($al['book_title']) ?></td>
+          <td><?= htmlspecialchars($al['borrower_name'])?></td>
+          <td><?= htmlspecialchars($al['borrow_date']) ?></td>
+          <td><?= htmlspecialchars($al['status'])?></td>
           <td>
             <form action="return.php" method="POST">
               <input type="hidden" name="borrow_id" value="<?= $al['id'] ?>">
